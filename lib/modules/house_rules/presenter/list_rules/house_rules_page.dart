@@ -29,11 +29,19 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: widget.cubit.doLogout,
-            icon: const Icon(Icons.arrow_back),
-          ),
+          // leading: IconButton(
+          //   onPressed: widget.cubit.doLogout,
+          //   icon: const Icon(Icons.arrow_back),
+          // ),
+          automaticallyImplyLeading: false,
           title: const Text('House Rules'),
+          actions: [
+            IconButton(
+              onPressed: widget.cubit.doLogout,
+              icon: const Icon(Icons.logout),
+              tooltip: 'Logout',
+            ),
+          ],
         ),
         body: BlocConsumer<HouseRulesCubit, HouseRulesState>(
           bloc: widget.cubit,

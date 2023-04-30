@@ -8,7 +8,7 @@ abstract class AppRoutes {
   static const String houseRules = '/houseRules';
 
   static Map<String, WidgetBuilder> mapRoutes = {
-    AppRoutes.login: (context) => LoginPage(controller: I.get()),
+    AppRoutes.login: (context) => LoginPage(cubit: I.get()),
     AppRoutes.houseRules: (context) => HouseRulesPage(cubit: I.get()),
   };
 }
