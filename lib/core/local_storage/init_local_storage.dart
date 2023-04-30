@@ -6,7 +6,7 @@ Future<void> initLocalStorage() async {
   // var path = Directory.current.path;
   final appDir = await getApplicationDocumentsDirectory();
   Hive.init(appDir.path);
-  await Hive.openBox(appBox);
+  await Hive.openBox(APP_BOX);
 }
 
-Box get getOpenedBox => Hive.box(appBox);
+Box get getOpenedBox => Hive.box(APP_BOX);

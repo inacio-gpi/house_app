@@ -1,17 +1,16 @@
-// ignore_for_file: overridden_fields
-
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:house_app/lib.dart';
 
-class UserModel extends UserEntity {
+class UserModel extends Equatable {
   final String name;
   final String token;
 
-  UserModel({
+  const UserModel({
     required this.name,
     required this.token,
-  }) : super(name: name, token: token);
+  });
 
   Map<String, dynamic> toMap() => {
         'name': name,
@@ -23,7 +22,12 @@ class UserModel extends UserEntity {
         token: map['token'] ?? '',
       );
 
+  factory UserModel.empty() => UserModel.fromMap(mapEmpty);
+
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source));
+
+  @override
+  List<Object?> get props => [name, token];
 }

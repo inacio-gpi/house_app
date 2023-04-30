@@ -29,12 +29,13 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          // leading: IconButton(
-          //   onPressed: widget.cubit.doLogout,
-          //   icon: const Icon(Icons.arrow_back),
-          // ),
           automaticallyImplyLeading: false,
-          title: const Text('House Rules'),
+          title: Row(
+            children: [
+              const Text('Hello, '),
+              Text(widget.cubit.user.name.toUpperCase()),
+            ],
+          ),
           actions: [
             IconButton(
               onPressed: widget.cubit.doLogout,
@@ -43,39 +44,55 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
             ),
           ],
         ),
-        body: BlocConsumer<HouseRulesCubit, HouseRulesState>(
-          bloc: widget.cubit,
-          listener: (context, state) {
-            if (state is ErrorState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.failure.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is SuccessState) {
-              return ListView.builder(
-                itemCount: state.houseRules.entities.length,
-                itemBuilder: (context, index) {
-                  final item = state.houseRules.entities[index];
-                  return ListTile(
-                    title: Text(
-                      item.name,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    subtitle: Text(
-                      item.active.toString(),
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: BlocConsumer<HouseRulesCubit, HouseRulesState>(
+              bloc: widget.cubit,
+              listener: (context, state) {
+                if (state is ErrorState) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.failure.message),
+                      backgroundColor: Colors.red,
                     ),
                   );
-                },
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
+                }
+              },
+              builder: (context, state) {
+                if (state is SuccessState) {
+                  return ListView.builder(
+                    itemCount: state.houseRules.entities.length,
+                    itemBuilder: (context, index) {
+                      final item = state.houseRules.entities[index];
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withOpacity(item.active == 1 ? 0.8 : 0.2),
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.name,
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              item.active.toString(),
+                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
         ),
       );
 }

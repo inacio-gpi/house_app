@@ -1,4 +1,4 @@
-abstract class LocalStorage {
+abstract class ILocalStorage {
   Future<void> saveData(String key, dynamic data);
   Future<dynamic> getData(String key);
   Future<void> deleteData(String key);

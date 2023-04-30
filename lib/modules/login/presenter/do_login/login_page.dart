@@ -58,8 +58,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const Spacer(),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: _nameInputController,
+                    decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       hintText: 'Enter your name',
                     ),

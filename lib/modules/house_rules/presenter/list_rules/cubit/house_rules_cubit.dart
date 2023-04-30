@@ -4,11 +4,15 @@ import 'package:house_app/lib.dart';
 class HouseRulesCubit extends Cubit<HouseRulesState> {
   final IGetHouseRulesUseCase _getHouseRulesUseCase;
   final INavigationService _navigationService;
-
+  final UserService _userService;
+  late UserModel user;
   HouseRulesCubit(
     this._getHouseRulesUseCase,
     this._navigationService,
-  ) : super(InitialState());
+    this._userService,
+  ) : super(InitialState()) {
+    user = _userService.currentUser;
+  }
 
   Future<void> getHouseRules([String? linkUrl]) async {
     emit(LoadingState());
@@ -24,6 +28,7 @@ class HouseRulesCubit extends Cubit<HouseRulesState> {
   }
 
   Future<void> doLogout() async {
+    await _userService.userLogout();
     await _navigationService.offAllNamed(AppRoutes.login);
   }
 }

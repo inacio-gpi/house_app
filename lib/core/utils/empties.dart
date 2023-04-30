@@ -1,0 +1,1 @@
+const mapEmpty = <String, dynamic>{'': ''};

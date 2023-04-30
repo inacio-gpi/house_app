@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:house_app/lib.dart';
 
-class HiveLocalStorage implements LocalStorage {
+class HiveLocalStorage implements ILocalStorage {
   final Box _box;
 
   HiveLocalStorage(this._box);

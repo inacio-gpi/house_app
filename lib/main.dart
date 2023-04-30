@@ -5,12 +5,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initLocalStorage();
   initInjector();
-  runApp(const MyApp());
+  runApp(
+    MyApp(
+      initialRoute: await AppRoutes.initial,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  const MyApp({
+    Key? key,
+    required this.initialRoute,
+  }) : super(key: key);
+  final String initialRoute;
   @override
   Widget build(BuildContext context) => MaterialApp(
         navigatorKey: NavigationService.navigatorKey,
@@ -19,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(),
         darkTheme: AppTheme.darkTheme(),
         themeMode: ThemeMode.system,
-        initialRoute: AppRoutes.login,
+        initialRoute: initialRoute,
         routes: AppRoutes.mapRoutes,
       );
 }
