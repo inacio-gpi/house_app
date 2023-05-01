@@ -5,5 +5,6 @@ void houseRulesBinding() {
     ..registerLazySingleton<IHouseRulesDataSource>(() => HouseRulesDataSource(I()))
     ..registerLazySingleton<IHouseRulesRepository>(() => HouseRulesRepository(I()))
     ..registerLazySingleton<IGetHouseRulesUseCase>(() => GetHouseRulesUseCase(I()))
-    ..registerLazySingleton<HouseRulesCubit>(() => HouseRulesCubit(I(), I(), I()));
+    ..registerLazySingleton<ICreateHouseRuleUseCase>(() => CreateHouseRuleUseCase(I()))
+    ..registerLazySingleton<HouseRulesCubit>(() => HouseRulesCubit(I(), I(), I(), I()));
 }

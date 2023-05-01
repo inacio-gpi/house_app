@@ -61,32 +61,51 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
               },
               builder: (context, state) {
                 if (state is SuccessState) {
-                  return ListView.builder(
-                    itemCount: state.houseRules.entities.length,
-                    itemBuilder: (context, index) {
-                      final item = state.houseRules.entities[index];
-                      return Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(item.active == 1 ? 0.8 : 0.2),
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  return Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () async {
+                            await widget.cubit.openCreateRule(context);
+                          },
+                          child: const Text('Add new rule +'),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.name,
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              item.active.toString(),
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                            ),
-                          ],
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.houseRules.entities.length,
+                          itemBuilder: (context, index) {
+                            final item = state.houseRules.entities[index];
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor.withOpacity(item.active == 1 ? 0.8 : 0.2),
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.name,
+                                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    item.active.toString(),
+                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
+                  );
+                } else if (state is ErrorState) {
+                  return const Center(
+                    child: Text('something is wrong'),
                   );
                 }
                 return const Center(child: CircularProgressIndicator());

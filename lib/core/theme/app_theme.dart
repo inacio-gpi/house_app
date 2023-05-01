@@ -27,6 +27,7 @@ class AppTheme {
       primaryColor: colorScheme.primary,
       canvasColor: colorScheme.background,
       scaffoldBackgroundColor: colorScheme.background,
+      colorScheme: colorScheme.copyWith(background: colorScheme.background),
       appBarTheme: AppBarTheme(
         elevation: 0,
         toolbarHeight: 48,
@@ -45,14 +46,32 @@ class AppTheme {
           color: colorScheme.onPrimary,
         ),
       ),
+      // dropdownMenuTheme: DropdownMenuThemeData(
+      //   inputDecorationTheme: InputDecorationTheme(
+      //     isDense: true,
+      //     border: const OutlineInputBorder(
+      //       borderRadius: BorderRadius.all(Radius.circular(8)),
+      //     ),
+      //     enabledBorder: OutlineInputBorder(
+      //       borderRadius: const BorderRadius.all(Radius.circular(8)),
+      //       borderSide: BorderSide(color: colorScheme.surface.withOpacity(0.2), width: 1),
+      //     ),
+      //   ),
+      //   textStyle: TextStyle(
+      //     fontSize: 14,
+      //     fontWeight: FontWeight.w400,
+      //     color: colorScheme.onBackground,
+      //   ),
+      // ),
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
         filled: true,
         fillColor: Colors.transparent,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        labelStyle: const TextStyle(
+        labelStyle: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
+          color: colorScheme.onPrimary,
         ),
         hintStyle: const TextStyle(
           fontSize: 14,
@@ -216,7 +235,6 @@ class AppTheme {
           side: BorderSide(width: 2.0, color: colorScheme.primary),
         ),
       ),
-      colorScheme: colorScheme.copyWith(background: colorScheme.background),
     );
   }
 

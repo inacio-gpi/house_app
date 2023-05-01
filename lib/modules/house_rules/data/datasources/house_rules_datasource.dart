@@ -2,6 +2,7 @@ import 'package:house_app/lib.dart';
 
 abstract class IHouseRulesDataSource {
   Future<BaseResponse<HouseRulesModel>> getHouseRules([String? linkUrl]);
+  Future<BaseResponse<void>> createHouseRule(EntitiesEntity param);
 }
 
 class HouseRulesDataSource extends IHouseRulesDataSource {
@@ -11,13 +12,21 @@ class HouseRulesDataSource extends IHouseRulesDataSource {
 
   @override
   Future<BaseResponse<HouseRulesModel>> getHouseRules([String? linkUrl]) async {
-    final response = await _restClient.get(
-      linkUrl ?? ApiRoutes.baseUrl,
-      header: {'Authorization': 'Bearer 40fe071962846075452a4f6123ae71697463cad20f51e237e2035b41af0513d8'},
-    );
+    final response = await _restClient.get(linkUrl ?? ApiRoutes.baseUrl);
     return BaseResponse<HouseRulesModel>(
       success: response.data['success'],
       data: HouseRulesModel.fromMap(response.data['data']),
+      message: response.data['message'],
+      statusCode: response.statusCode,
+    );
+  }
+
+  @override
+  Future<BaseResponse<void>> createHouseRule(EntitiesEntity param) async {
+    final response = await _restClient.post(ApiRoutes.baseUrl);
+    return BaseResponse<void>(
+      success: response.data['success'],
+      data: null,
       message: response.data['message'],
       statusCode: response.statusCode,
     );
