@@ -5,12 +5,14 @@ import 'package:house_app/lib.dart';
 class HouseRulesCubit extends Cubit<HouseRulesState> {
   final IGetHouseRulesUseCase _getHouseRulesUseCase;
   final ICreateHouseRuleUseCase _createHouseRuleUseCase;
+  final IUpdateRuleUseCase _updateRuleUseCase;
   final INavigationService _navigationService;
   final UserService _userService;
   late UserModel user;
   HouseRulesCubit(
     this._getHouseRulesUseCase,
     this._createHouseRuleUseCase,
+    this._updateRuleUseCase,
     this._navigationService,
     this._userService,
   ) : super(InitialState()) {
@@ -78,7 +80,7 @@ class HouseRulesCubit extends Cubit<HouseRulesState> {
       ),
     );
     if (ruleEntity != null) {
-      final result = await _createHouseRuleUseCase(ruleEntity);
+      final result = await _updateRuleUseCase(ruleEntity);
       result.fold(
         (final l) {
           emit(ErrorState(failure: l));

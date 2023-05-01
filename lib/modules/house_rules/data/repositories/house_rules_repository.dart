@@ -25,4 +25,14 @@ class HouseRulesRepository extends IHouseRulesRepository {
       return left(e);
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateRule(EntitiesEntity param) async {
+    try {
+      final result = await _dataSource.updateRule(param);
+      return right(result.data);
+    } on Failure catch (e) {
+      return left(e);
+    }
+  }
 }

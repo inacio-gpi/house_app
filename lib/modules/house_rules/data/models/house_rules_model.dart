@@ -62,7 +62,7 @@ class EntitiesModel extends EntitiesEntity {
 
   factory EntitiesModel.fromJson(String source) => EntitiesModel.fromMap(json.decode(source));
 
-  static Map<String, dynamic> toCreateRule(EntitiesEntity param) => {
+  static Map<String, dynamic> toRequest(EntitiesEntity param) => {
         'house_rules': {
           'name': param.name,
           'active': param.active,

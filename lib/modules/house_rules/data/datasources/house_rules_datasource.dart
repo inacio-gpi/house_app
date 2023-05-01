@@ -3,6 +3,7 @@ import 'package:house_app/lib.dart';
 abstract class IHouseRulesDataSource {
   Future<BaseResponse<HouseRulesModel>> getHouseRules([String? linkUrl]);
   Future<BaseResponse<void>> createHouseRule(EntitiesEntity param);
+  Future<BaseResponse<void>> updateRule(EntitiesEntity param);
 }
 
 class HouseRulesDataSource extends IHouseRulesDataSource {
@@ -25,7 +26,21 @@ class HouseRulesDataSource extends IHouseRulesDataSource {
   Future<BaseResponse<void>> createHouseRule(EntitiesEntity param) async {
     final response = await _restClient.post(
       ApiRoutes.baseUrl,
-      body: EntitiesModel.toCreateRule(param),
+      body: EntitiesModel.toRequest(param),
+    );
+    return BaseResponse<void>(
+      success: response.data['success'],
+      data: null,
+      message: response.data['message'],
+      statusCode: response.statusCode,
+    );
+  }
+
+  @override
+  Future<BaseResponse<void>> updateRule(EntitiesEntity param) async {
+    final response = await _restClient.put(
+      '${ApiRoutes.baseUrl}/${param.id}',
+      body: EntitiesModel.toRequest(param),
     );
     return BaseResponse<void>(
       success: response.data['success'],
