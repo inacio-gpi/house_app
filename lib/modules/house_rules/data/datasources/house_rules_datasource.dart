@@ -12,7 +12,7 @@ class HouseRulesDataSource extends IHouseRulesDataSource {
 
   @override
   Future<BaseResponse<HouseRulesModel>> getHouseRules([String? linkUrl]) async {
-    final response = await _restClient.get(linkUrl ?? ApiRoutes.baseUrl);
+    final response = await _restClient.get(linkUrl?.replaceAll('http', 'https') ?? ApiRoutes.baseUrl);
     return BaseResponse<HouseRulesModel>(
       success: response.data['success'],
       data: HouseRulesModel.fromMap(response.data['data']),
@@ -23,7 +23,10 @@ class HouseRulesDataSource extends IHouseRulesDataSource {
 
   @override
   Future<BaseResponse<void>> createHouseRule(EntitiesEntity param) async {
-    final response = await _restClient.post(ApiRoutes.baseUrl);
+    final response = await _restClient.post(
+      ApiRoutes.baseUrl,
+      body: EntitiesModel.toCreateRule(param),
+    );
     return BaseResponse<void>(
       success: response.data['success'],
       data: null,

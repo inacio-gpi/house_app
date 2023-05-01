@@ -61,6 +61,13 @@ class EntitiesModel extends EntitiesEntity {
   String toJson() => json.encode(toMap());
 
   factory EntitiesModel.fromJson(String source) => EntitiesModel.fromMap(json.decode(source));
+
+  static Map<String, dynamic> toCreateRule(EntitiesEntity param) => {
+        'house_rules': {
+          'name': param.name,
+          'active': param.active,
+        },
+      };
 }
 
 class PaginationModel extends PaginationEntity {

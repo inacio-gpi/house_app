@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:house_app/lib.dart';
-import 'package:house_app/modules/house_rules/presenter/components/create_rule_dialog.dart';
 
 class HouseRulesCubit extends Cubit<HouseRulesState> {
   final IGetHouseRulesUseCase _getHouseRulesUseCase;
@@ -18,6 +17,24 @@ class HouseRulesCubit extends Cubit<HouseRulesState> {
     user = _userService.currentUser;
   }
 
+  late HouseRulesEntity houseRules;
+
+  bool get hasBottomPagination => houseRules.pagination.totalPages >= 2;
+  bool get isValidBackButton => houseRules.pagination.currentPage >= 2;
+  bool get isValidNextButton => houseRules.pagination.totalPages > houseRules.pagination.currentPage;
+
+  Future<void> nextPage() async {
+    if (isValidNextButton) {
+      await getHouseRules(houseRules.pagination.links.next);
+    }
+  }
+
+  Future<void> backPage() async {
+    if (isValidBackButton) {
+      await getHouseRules(houseRules.pagination.links.prev);
+    }
+  }
+
   Future<void> getHouseRules([String? linkUrl]) async {
     emit(LoadingState());
     final result = await _getHouseRulesUseCase(linkUrl);
@@ -26,18 +43,50 @@ class HouseRulesCubit extends Cubit<HouseRulesState> {
         emit(ErrorState(failure: l));
       },
       (final r) {
+        houseRules = r;
         emit(SuccessState(houseRules: r));
       },
     );
   }
 
   Future<void> openCreateRule(BuildContext context) async {
-    final result = await showDialog(
+    final ruleEntity = await showDialog(
       context: context,
-      builder: (context) => const CreateRulesDialog(),
+      builder: (context) => const CreateRulesDialog(
+        titleDialog: 'New rule:',
+      ),
     );
-    if (result != null) {
-      await _createHouseRuleUseCase(result);
+    if (ruleEntity != null) {
+      final result = await _createHouseRuleUseCase(ruleEntity);
+      result.fold(
+        (final l) {
+          emit(ErrorState(failure: l));
+        },
+        (final r) {
+          getHouseRules();
+        },
+      );
+    }
+  }
+
+  Future<void> openUpdateRule(BuildContext context, {required EntitiesEntity rule}) async {
+    final ruleEntity = await showDialog(
+      context: context,
+      builder: (context) => CreateRulesDialog(
+        titleDialog: 'Update rule:',
+        rule: rule,
+      ),
+    );
+    if (ruleEntity != null) {
+      final result = await _createHouseRuleUseCase(ruleEntity);
+      result.fold(
+        (final l) {
+          emit(ErrorState(failure: l));
+        },
+        (final r) {
+          getHouseRules();
+        },
+      );
     }
   }
 

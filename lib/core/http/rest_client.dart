@@ -41,9 +41,6 @@ class RestClient implements IRestClient {
       _http.get(
         path,
         queryParameters: queryParams,
-        options: Options(
-          headers: header,
-        ),
       ),
     );
   }
@@ -60,9 +57,6 @@ class RestClient implements IRestClient {
       _http.patch(
         path,
         queryParameters: queryParams,
-        options: Options(
-          headers: header,
-        ),
       ),
     );
   }
@@ -78,10 +72,8 @@ class RestClient implements IRestClient {
     return await _executeRequest(
       _http.post(
         path,
+        data: body,
         queryParameters: queryParams,
-        options: Options(
-          headers: header,
-        ),
       ),
     );
   }

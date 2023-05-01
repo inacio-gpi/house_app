@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:house_app/lib.dart';
 
 class CreateRulesDialog extends StatefulWidget {
-  const CreateRulesDialog({Key? key}) : super(key: key);
-
+  const CreateRulesDialog({
+    Key? key,
+    required this.titleDialog,
+    this.rule,
+  }) : super(key: key);
+  final String titleDialog;
+  final EntitiesEntity? rule;
   @override
   State<StatefulWidget> createState() => _CreateRulesDialogState();
 }
@@ -13,7 +18,7 @@ class _CreateRulesDialogState extends State<CreateRulesDialog> {
   @override
   void initState() {
     super.initState();
-    _ruleNameInputController = TextEditingController();
+    _ruleNameInputController = TextEditingController(text: widget.rule?.name);
   }
 
   @override
@@ -30,8 +35,8 @@ class _CreateRulesDialogState extends State<CreateRulesDialog> {
     Navigator.pop(
         context,
         EntitiesEntity(
-          id: 0,
-          order: 0,
+          id: widget.rule?.id ?? 0,
+          order: widget.rule?.order ?? 0,
           name: _ruleNameInputController.text,
           active: dropdownValue == 'Yes' ? 1 : 0,
         ));
@@ -44,14 +49,15 @@ class _CreateRulesDialogState extends State<CreateRulesDialog> {
   @override
   Widget build(BuildContext context) => AlertDialog(
         titlePadding: const EdgeInsets.all(20),
-        title: const Text('New rule:'),
+        title: Text(widget.titleDialog),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: _ruleNameInputController,
+              decoration: const InputDecoration(
                 hintText: 'Rule name',
               ),
             ),

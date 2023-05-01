@@ -21,12 +21,6 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -61,46 +55,71 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
               },
               builder: (context, state) {
                 if (state is SuccessState) {
-                  return Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () async {
-                            await widget.cubit.openCreateRule(context);
-                          },
-                          child: const Text('Add new rule +'),
+                  return CustomScrollView(
+                    primary: true,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () async {
+                              await widget.cubit.openCreateRule(context);
+                            },
+                            child: const Text('Add new rule +'),
+                          ),
                         ),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: state.houseRules.entities.length,
-                          itemBuilder: (context, index) {
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          childCount: state.houseRules.entities.length,
+                          (final context, final index) {
                             final item = state.houseRules.entities[index];
-                            return Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor.withOpacity(item.active == 1 ? 0.8 : 0.2),
-                                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    item.active.toString(),
-                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                                  ),
-                                ],
+
+                            return InkWell(
+                              onTap: () async {
+                                await widget.cubit.openUpdateRule(context, rule: item);
+                              },
+                              borderRadius: const BorderRadius.all(Radius.circular(8)),
+                              child: Ink(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor.withOpacity(item.active == 1 ? 0.8 : 0.2),
+                                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.name,
+                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      item.active.toString(),
+                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
                         ),
                       ),
+                      if (widget.cubit.hasBottomPagination)
+                        SliverFillRemaining(
+                          fillOverscroll: false,
+                          hasScrollBody: false,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                ListPaginationComponent(cubit: widget.cubit),
+                              ],
+                            ),
+                          ),
+                        ),
                     ],
                   );
                 } else if (state is ErrorState) {
