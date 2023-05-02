@@ -16,12 +16,13 @@ class CreateRulesDialog extends StatefulWidget {
 class _CreateRulesDialogState extends State<CreateRulesDialog> {
   final list = ['Yes', 'No'];
   final _formKey = GlobalKey<FormState>();
-  String dropdownValue = 'Yes';
+  late String dropdownValue;
 
   late TextEditingController _ruleNameInputController;
   @override
   void initState() {
     super.initState();
+    dropdownValue = widget.rule?.active == 0 ? 'No' : 'Yes';
     _ruleNameInputController = TextEditingController(text: widget.rule?.name);
   }
 

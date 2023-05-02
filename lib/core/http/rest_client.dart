@@ -87,8 +87,9 @@ class RestClient implements IRestClient {
   }) async {
     _http.options.headers = _setHeaders(header);
     return await _executeRequest(
-      _http.get(
+      _http.put(
         path,
+        data: body,
         queryParameters: queryParams,
       ),
     );
