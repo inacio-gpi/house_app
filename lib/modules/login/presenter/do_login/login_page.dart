@@ -14,6 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+
   late TextEditingController _nameInputController;
   @override
   void initState() {
@@ -25,6 +27,12 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _nameInputController.dispose();
     super.dispose();
+  }
+
+  Future<void> _doLogin() async {
+    if (_formKey.currentState!.validate()) {
+      await widget.cubit.doLogin(name: _nameInputController.text);
+    }
   }
 
   @override
@@ -44,45 +52,52 @@ class _LoginPageState extends State<LoginPage> {
             },
             builder: (context, state) => Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  const Text(
-                    'Welcome Back',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    const Text(
+                      'Welcome Back',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  TextField(
-                    controller: _nameInputController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: 'Enter your name',
-                    ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await widget.cubit.doLogin(name: _nameInputController.text);
+                    const Spacer(),
+                    TextFormField(
+                      controller: _nameInputController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
                       },
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Colors.white,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person),
+                        hintText: 'Enter your name',
+                      ),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _doLogin,
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text('developed by: @inacio.gpi'),
-                ],
+                    const SizedBox(height: 20),
+                    const Text('developed by: @inacio.gpi'),
+                  ],
+                ),
               ),
             ),
           ),
