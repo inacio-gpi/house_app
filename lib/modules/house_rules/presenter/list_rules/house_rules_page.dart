@@ -119,9 +119,18 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
                                                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                                                     ),
                                                     const SizedBox(height: 8),
-                                                    Text(
-                                                      item.active.toString(),
-                                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          item.id.toString(),
+                                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                                        ),
+                                                        Text(
+                                                          item.active.toString(),
+                                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
