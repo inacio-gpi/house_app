@@ -35,11 +35,15 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              Text(
-                widget.cubit.user.name.toUpperCase(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+              Expanded(
+                child: Text(
+                  widget.cubit.user.name.toUpperCase(),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
