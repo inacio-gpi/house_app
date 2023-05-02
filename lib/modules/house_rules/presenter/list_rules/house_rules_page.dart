@@ -17,6 +17,7 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
   @override
   void initState() {
     super.initState();
+    widget.cubit.setUser();
     widget.cubit.getHouseRules();
   }
 
@@ -25,9 +26,22 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text('Hello, '),
-              Text(widget.cubit.user.name.toUpperCase()),
+              const Text(
+                'Hi ',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Text(
+                widget.cubit.user.name.toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
           actions: [
@@ -75,32 +89,72 @@ class _HouseRulesPageState extends State<HouseRulesPage> {
                           (final context, final index) {
                             final item = state.houseRules.entities[index];
 
-                            return InkWell(
-                              onTap: () async {
-                                await widget.cubit.openUpdateRule(context, rule: item);
-                              },
-                              borderRadius: const BorderRadius.all(Radius.circular(8)),
-                              child: Ink(
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor.withOpacity(item.active == 1 ? 0.8 : 0.2),
-                                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.name,
-                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                            return Column(
+                              children: [
+                                Card(
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor.withOpacity(item.active == 1 ? 0.8 : 0.2),
+                                      borderRadius: const BorderRadius.all(Radius.circular(8)),
                                     ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      item.active.toString(),
-                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                    child: IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              borderRadius: const BorderRadius.only(
+                                                topLeft: Radius.circular(8),
+                                                bottomLeft: Radius.circular(8),
+                                              ),
+                                              onTap: () async {
+                                                await widget.cubit.openUpdateRule(context, rule: item);
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      item.name,
+                                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                                    ),
+                                                    const SizedBox(height: 8),
+                                                    Text(
+                                                      item.active.toString(),
+                                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: double.infinity,
+                                            width: 1,
+                                            // color: Theme.of(context).colorScheme.onPrimary,
+                                            color: Colors.black.withOpacity(0.4),
+                                          ),
+                                          InkWell(
+                                            borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(8),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                            onTap: () async {
+                                              await widget.cubit.deleteRule(item);
+                                            },
+                                            child: Container(
+                                              height: double.infinity,
+                                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                                              child: const Icon(Icons.delete_forever),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(height: 16),
+                              ],
                             );
                           },
                         ),

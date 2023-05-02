@@ -46,23 +46,6 @@ class AppTheme {
           color: colorScheme.onPrimary,
         ),
       ),
-      // dropdownMenuTheme: DropdownMenuThemeData(
-      //   inputDecorationTheme: InputDecorationTheme(
-      //     isDense: true,
-      //     border: const OutlineInputBorder(
-      //       borderRadius: BorderRadius.all(Radius.circular(8)),
-      //     ),
-      //     enabledBorder: OutlineInputBorder(
-      //       borderRadius: const BorderRadius.all(Radius.circular(8)),
-      //       borderSide: BorderSide(color: colorScheme.surface.withOpacity(0.2), width: 1),
-      //     ),
-      //   ),
-      //   textStyle: TextStyle(
-      //     fontSize: 14,
-      //     fontWeight: FontWeight.w400,
-      //     color: colorScheme.onBackground,
-      //   ),
-      // ),
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
         filled: true,
@@ -176,9 +159,9 @@ class AppTheme {
       ),
       cardColor: colorScheme.background,
       cardTheme: CardTheme(
-        color: colorScheme.background,
+        elevation: 8,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(29.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -193,28 +176,6 @@ class AppTheme {
           fontSize: 14,
           fontWeight: FontWeight.w400,
           letterSpacing: 1.5,
-        ),
-      ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        elevation: 0,
-        // selectedItemColor: appColor.primary,
-        unselectedItemColor: colorScheme.onBackground,
-      ),
-      chipTheme: ChipThemeData(
-        elevation: 0,
-        pressElevation: 0,
-        selectedColor: colorScheme.primary,
-        checkmarkColor: colorScheme.onPrimary,
-        backgroundColor: Colors.transparent,
-        labelStyle: TextStyle(
-          color: colorScheme.onPrimary,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          // fontFamily: AppEnv.appFont,
-        ),
-        iconTheme: IconThemeData(color: colorScheme.onPrimary),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14.0),
         ),
       ),
       pageTransitionsTheme: const PageTransitionsTheme(builders: {

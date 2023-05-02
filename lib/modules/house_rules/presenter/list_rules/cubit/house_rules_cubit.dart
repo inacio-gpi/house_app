@@ -6,24 +6,28 @@ class HouseRulesCubit extends Cubit<HouseRulesState> {
   final IGetHouseRulesUseCase _getHouseRulesUseCase;
   final ICreateHouseRuleUseCase _createHouseRuleUseCase;
   final IUpdateRuleUseCase _updateRuleUseCase;
+  final IDeleteHouseRuleUseCase _deleteHouseRuleUseCase;
   final INavigationService _navigationService;
   final UserService _userService;
-  late UserModel user;
   HouseRulesCubit(
     this._getHouseRulesUseCase,
     this._createHouseRuleUseCase,
     this._updateRuleUseCase,
+    this._deleteHouseRuleUseCase,
     this._navigationService,
     this._userService,
   ) : super(InitialState()) {
-    user = _userService.currentUser;
+    // user = _userService.currentUser;
   }
-
+  late UserModel user;
   late HouseRulesEntity houseRules;
 
   bool get hasBottomPagination => houseRules.pagination.totalPages >= 2;
   bool get isValidBackButton => houseRules.pagination.currentPage >= 2;
   bool get isValidNextButton => houseRules.pagination.totalPages > houseRules.pagination.currentPage;
+  void setUser() {
+    user = _userService.currentUser;
+  }
 
   Future<void> nextPage() async {
     if (isValidNextButton) {
@@ -90,6 +94,18 @@ class HouseRulesCubit extends Cubit<HouseRulesState> {
         },
       );
     }
+  }
+
+  Future<void> deleteRule(EntitiesEntity rule) async {
+    final result = await _deleteHouseRuleUseCase(rule);
+    result.fold(
+      (final l) {
+        emit(ErrorState(failure: l));
+      },
+      (final r) {
+        getHouseRules();
+      },
+    );
   }
 
   Future<void> doLogout() async {
