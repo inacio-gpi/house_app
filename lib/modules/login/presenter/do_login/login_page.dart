@@ -36,68 +36,66 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: BlocConsumer<LoginCubit, LoginState>(
-            bloc: widget.cubit,
-            listener: (context, state) {
-              if (state is LoginErrorState) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.failure.message),
-                    backgroundColor: Colors.red,
+  Widget build(BuildContext context) => BaseScaffold(
+        body: BlocConsumer<LoginCubit, LoginState>(
+          bloc: widget.cubit,
+          listener: (context, state) {
+            if (state is LoginErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.failure.message),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          },
+          builder: (context, state) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  const Text(
+                    'Welcome Back',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                );
-              }
-            },
-            builder: (context, state) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(),
-                    const Text(
-                      'Welcome Back',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  const Spacer(),
+                  TextFormField(
+                    controller: _nameInputController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      hintText: 'Enter your name',
                     ),
-                    const Spacer(),
-                    TextFormField(
-                      controller: _nameInputController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        hintText: 'Enter your name',
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _doLogin,
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _doLogin,
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Text('developed by: @inacio.gpi'),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('developed by: @inacio.gpi'),
+                ],
               ),
             ),
           ),
